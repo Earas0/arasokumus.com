@@ -1,0 +1,15 @@
+TXT
+arasokumus.com
+"v=spf1 include:_spfcls.natrohost.com include:_netblockshalon.natrohost.com ~all"
+
+NS
+arasokumus.com
+ns1.natrohost.com
+
+NS
+arasokumus.com
+ns2.natrohost.com
+
+CNAME
+www
+earas0.github.io
