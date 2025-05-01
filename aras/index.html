@@ -72,11 +72,46 @@
         display: block;
       }
     }
+
+    :root {
+  --bg-color: #ffffff;
+  --text-color: #212529;
+  --header-bg: #343a40;
+}
+
+[data-theme="dark"] {
+  --bg-color: #212529;
+  --text-color: #f8f9fa;
+  --header-bg: #1a1a1a;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+header {
+  background-color: var(--header-bg) !important;
+}
+
+/* Form switch özel stil */
+.form-check-input:checked {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
   </style>
 </head>
 <body>
   <!-- Responsive Header -->
   <header class="text-white fixed-top py-3 shadow">
+    <div class="form-check form-switch ms-auto"> <!-- ms-auto ile sağa yaslar -->
+      <input class="form-check-input" type="checkbox" id="themeSwitch">
+      <label class="form-check-label text-white" for="themeSwitch">
+        <i class="bi bi-sun-fill d-none" id="sunIcon"></i>
+        <i class="bi bi-moon-stars-fill" id="moonIcon"></i>
+      </label>
+    </div>
     <div class="container d-flex justify-content-between align-items-center">
       <h1 class="header-title mb-0 fs-4">EARAS</h1>
       <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse">
@@ -150,5 +185,37 @@
       });
     });
   </script>
+
+  <script>
+  // Tema değiştirme fonksiyonu
+  const themeSwitch = document.getElementById('themeSwitch');
+  const sunIcon = document.getElementById('sunIcon');
+  const moonIcon = document.getElementById('moonIcon');
+
+  // LocalStorage kontrolü
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.setAttribute('data-theme', 'dark');
+    themeSwitch.checked = true;
+    toggleIcons();
+  }
+
+  // Switch event listener
+  themeSwitch.addEventListener('change', function() {
+    if (this.checked) {
+      document.body.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.body.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+    }
+    toggleIcons();
+  });
+
+  // İkon değiştirme fonksiyonu
+  function toggleIcons() {
+    sunIcon.classList.toggle('d-none');
+    moonIcon.classList.toggle('d-none');
+  }
+</script>
 </body>
 </html>
