@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tema Değiştirmeli Site</title>
+  <title>Advanced Theme Switcher</title>
   <!-- Bootstrap 5 CSS + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
@@ -34,50 +34,98 @@
     }
     
     header {
-      background-color: var(--header-bg) !important;
+      background-color: var(--header-bg);
       transition: background-color 0.3s ease;
     }
     
-    footer {
-      background-color: var(--footer-bg) !important;
-      transform: translateY(100%);
-      transition: all 0.4s ease;
+    /* Advanced Theme Switch */
+    .theme-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
     }
     
-    body.scrolled footer {
-      transform: translateY(0);
+    .theme-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
     }
     
-    .card {
-      background-color: var(--card-bg);
-      transition: background-color 0.3s ease;
-    }
-    
-    .form-check-input:checked {
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background-color: #6c757d;
-      border-color: #6c757d;
+      transition: .4s;
+      border-radius: 34px;
     }
     
-    /* Responsive ayarlar */
-    @media (max-width: 768px) {
-      .header-title {
-        font-size: 1.25rem;
-      }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
     }
+    
+    input:checked + .slider {
+      background-color: #495057;
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(30px);
+    }
+    
+    /* Fixed icons */
+    .theme-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: white;
+      transition: opacity 0.3s;
+    }
+    
+    .sun-icon {
+      left: 8px;
+      opacity: 0;
+    }
+    
+    .moon-icon {
+      right: 8px;
+      opacity: 1;
+    }
+    
+    [data-theme="dark"] .sun-icon {
+      opacity: 1;
+    }
+    
+    [data-theme="dark"] .moon-icon {
+      opacity: 0;
+    }
+    
+    /* Diğer stiller... */
   </style>
 </head>
 <body>
-  <!-- Header with Theme Toggle -->
+  <!-- Header with Advanced Theme Toggle -->
   <header class="fixed-top py-3 shadow">
     <div class="container d-flex justify-content-between align-items-center">
       <h1 class="header-title mb-0 fs-4 text-white">Site Başlığı</h1>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="themeSwitch">
-        <label class="form-check-label text-white" for="themeSwitch">
-          <i class="bi bi-sun-fill d-none" id="sunIcon"></i>
-          <i class="bi bi-moon-stars-fill" id="moonIcon"></i>
-        </label>
-      </div>
+      <label class="theme-switch">
+        <input type="checkbox" id="themeSwitch">
+        <span class="slider"></span>
+        <i class="bi bi-sun-fill theme-icon sun-icon"></i>
+        <i class="bi bi-moon-stars-fill theme-icon moon-icon"></i>
+      </label>
     </div>
   </header>
 
@@ -88,10 +136,9 @@
         <div class="col-lg-8">
           <div class="card shadow mb-4">
             <div class="card-body text-center">
-              <h2 class="card-title">Tema Değiştirme Örneği</h2>
-              <p class="card-text">Header'daki switch ile koyu/açık tema arasında geçiş yapabilirsiniz.</p>
-              <div class="content-placeholder" style="height: 1200px;"></div>
-              <p class="text-muted">Sayfayı aşağı kaydırın (footer sadece en altta görünecek)</p>
+              <h2 class="card-title">Gelişmiş Tema Değiştirici</h2>
+              <p class="card-text">Switch butonundaki ikonlar sabit konumda kalır</p>
+              <div style="height: 1200px;"></div>
             </div>
           </div>
         </div>
@@ -101,35 +148,20 @@
 
   <!-- Footer -->
   <footer class="text-white py-3">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-6 text-center text-md-start">
-          <p class="mb-md-0">© 2023 Tüm Hakları Saklıdır</p>
-        </div>
-        <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
-          <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
-          <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
-          <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
-        </div>
-      </div>
+    <div class="container text-center">
+      <p class="mb-0">© 2023 Tüm Hakları Saklıdır</p>
     </div>
   </footer>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
-  <!-- Özel Scriptler -->
+  <!-- Scriptler -->
   <script>
     // Tema Değiştirme
     const themeSwitch = document.getElementById('themeSwitch');
-    const sunIcon = document.getElementById('sunIcon');
-    const moonIcon = document.getElementById('moonIcon');
     
-    // LocalStorage'dan tema kontrolü
+    // LocalStorage kontrolü
     if (localStorage.getItem('theme') === 'dark') {
       document.body.setAttribute('data-theme', 'dark');
       themeSwitch.checked = true;
-      toggleIcons();
     }
     
     // Switch event listener
@@ -141,18 +173,6 @@
         document.body.removeAttribute('data-theme');
         localStorage.setItem('theme', 'light');
       }
-      toggleIcons();
-    });
-    
-    function toggleIcons() {
-      sunIcon.classList.toggle('d-none');
-      moonIcon.classList.toggle('d-none');
-    }
-    
-    // Footer Kontrolü
-    window.addEventListener('scroll', function() {
-      const isBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50;
-      document.body.classList.toggle('scrolled', isBottom);
     });
   </script>
 </body>
